@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kanban 3º Primaria</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: {
+          sans: ['Inter', 'sans-serif']
+        },
+        extend: {
+          colors: {
+            primary: '#1f2937',
+            secondary: '#374151',
+            accent: '#2563eb'
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-gray-100 font-sans text-gray-800">
+
+  <header class="bg-primary text-white p-6 text-center">
+    <h1 class="text-2xl font-bold">Tablero Kanban · 3º de Primaria</h1>
+    <p class="text-sm mt-2">Organizamos nuestras tareas paso a paso</p>
+  </header>
+
+  <main class="p-4 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="kanban"></div>
+  </main>
+
+  <script>
+    const columnas = ["Por hacer", "En proceso", "Hecho"];
+
+    const tareasIniciales = [
+      // ====== 1–20 ======
+      {
+        id: 1,
+        titulo: "Sumas hasta 100",
+        descripcion: "Vamos a practicar sumas con números de dos cifras.",
+        contenido: "Resuelve:\n1) 34 + 25\n2) 46 + 18\n3) 57 + 23\n4) 68 + 12\n5) 79 + 11",
+        tiempo: "20 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 2,
+        titulo: "Restas hasta 100",
+        descripcion: "Aprendemos a restar con atención.",
+        contenido: "Resuelve:\n1) 54 - 27\n2) 83 - 19\n3) 70 - 34\n4) 91 - 46",
+        tiempo: "20 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 3,
+        titulo: "Problemas sencillos",
+        descripcion: "Lee y piensa antes de responder.",
+        contenido: "a) Juan tiene 20 canicas y gana 15 más.\nb) Había 60 libros y se prestan 18.\nc) Compras 12 lápices y luego 9 más.",
+        tiempo: "25 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 4,
+        titulo: "Lectura corta",
+        descripcion: "Leemos con calma y entendemos el texto.",
+        contenido: "Lee el texto 'El gato curioso'. Responde:\n- ¿Cómo es el gato?\n- ¿Dónde vive?\n- ¿Qué aprende al final?",
+        tiempo: "30 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 5,
+        titulo: "Escribe un cuento",
+        descripcion: "Inventamos una historia corta.",
+        contenido: "Escribe 6 frases:\n- Personaje\n- Lugar\n- Problema\n- Solución",
+        tiempo: "30 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 6,
+        titulo: "El agua",
+        descripcion: "Descubrimos para qué sirve el agua.",
+        contenido: "Escribe 5 usos del agua y dibuja uno.",
+        tiempo: "20 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 7,
+        titulo: "Animales vertebrados",
+        descripcion: "Clasificamos animales.",
+        contenido: "Escribe 2 mamíferos, 2 aves, 2 reptiles.",
+        tiempo: "20 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 8,
+        titulo: "Las plantas",
+        descripcion: "Aprendemos las partes de la planta.",
+        contenido: "Dibuja una planta y señala: raíz, tallo, hojas y flor.",
+        tiempo: "25 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 9,
+        titulo: "El cuerpo humano",
+        descripcion: "Conocemos nuestro cuerpo.",
+        contenido: "Escribe 5 partes del cuerpo y para qué sirven.",
+        tiempo: "20 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 10,
+        titulo: "Mi colegio",
+        descripcion: "Pensamos en nuestro cole.",
+        contenido: "Escribe qué te gusta del cole y por qué.",
+        tiempo: "15 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 11,
+        titulo: "Normas del aula",
+        descripcion: "Creamos normas juntos.",
+        contenido: "Escribe 5 normas importantes.",
+        tiempo: "25 min",
+        tipo: "En grupo",
+        columna: "Por hacer"
+      },
+      {
+        id: 12,
+        titulo: "Mi barrio",
+        descripcion: "Observamos nuestro entorno.",
+        contenido: "Dibuja un mapa simple de tu barrio.",
+        tiempo: "40 min",
+        tipo: "En grupo",
+        columna: "Por hacer"
+      },
+      {
+        id: 13,
+        titulo: "Manualidad reciclada",
+        descripcion: "Creamos con materiales usados.",
+        contenido: "Haz una manualidad con cartón o papel reciclado.",
+        tiempo: "1 clase",
+        tipo: "En grupo",
+        columna: "Por hacer"
+      },
+      {
+        id: 14,
+        titulo: "Experimento simple",
+        descripcion: "Observamos qué pasa.",
+        contenido: "Pon un papel en agua y observa qué ocurre.",
+        tiempo: "30 min",
+        tipo: "En grupo",
+        columna: "Por hacer"
+      },
+      {
+        id: 15,
+        titulo: "Dibujo libre",
+        descripcion: "Expresamos emociones.",
+        contenido: "Dibuja algo que te haga feliz.",
+        tiempo: "20 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 16,
+        titulo: "Problemas con dinero",
+        descripcion: "Usamos euros.",
+        contenido: "Si tienes 10€ y gastas 3€, ¿cuánto queda?",
+        tiempo: "20 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 17,
+        titulo: "Comprensión oral",
+        descripcion: "Escuchamos atentos.",
+        contenido: "Escucha al profe y responde 3 preguntas.",
+        tiempo: "15 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 18,
+        titulo: "Texto descriptivo",
+        descripcion: "Describimos personas.",
+        contenido: "Describe a un amigo con 5 frases.",
+        tiempo: "25 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      },
+      {
+        id: 19,
+        titulo: "Murales",
+        descripcion: "Trabajamos en equipo.",
+        contenido: "Cread un mural sobre las estaciones.",
+        tiempo: "1 clase",
+        tipo: "En grupo",
+        columna: "Por hacer"
+      },
+      {
+        id: 20,
+        titulo: "Animal imaginario",
+        descripcion: "Usamos la imaginación.",
+        contenido: "Dibuja un animal y escribe qué come y dónde vive.",
+        tiempo: "35 min",
+        tipo: "Individual",
+        columna: "Por hacer"
+      }
+    ];
+
+    const storageKey = "kanban_3primaria";
+
+    function cargarDatos() {
+      const data = localStorage.getItem(storageKey);
+      return data ? JSON.parse(data) : tareasIniciales;
+    }
+
+    function guardarDatos(tareas) {
+      localStorage.setItem(storageKey, JSON.stringify(tareas));
+    }
+
+    let tareas = cargarDatos();
+
+    function render() {
+      const kanban = document.getElementById("kanban");
+      kanban.innerHTML = "";
+
+      columnas.forEach(col => {
+        const colDiv = document.createElement("div");
+        colDiv.className = "bg-gray-200 rounded p-3 min-h-[300px]";
+        colDiv.innerHTML = `<h2 class="font-bold mb-3 text-center">${col}</h2>`;
+        colDiv.ondragover = e => e.preventDefault();
+        colDiv.ondrop = e => {
+          const id = e.dataTransfer.getData("id");
+          tareas.find(t => t.id == id).columna = col;
+          guardarDatos(tareas);
+          render();
+        };
+
+        tareas.filter(t => t.columna === col).forEach(t => {
+          const card = document.createElement("div");
+          card.className = "bg-white p-3 mb-3 rounded shadow cursor-move";
+          card.draggable = true;
+          card.ondragstart = e => e.dataTransfer.setData("id", t.id);
+          card.innerHTML = `
+            <h3 class="font-semibold">${t.titulo}</h3>
+            <p class="text-sm">${t.descripcion}</p>
+            <pre class="text-xs mt-2 whitespace-pre-wrap">${t.contenido}</pre>
+            <p class="text-xs mt-2"><strong>Tiempo:</strong> ${t.tiempo}</p>
+            <p class="text-xs"><strong>Tipo:</strong> ${t.tipo}</p>
+          `;
+          colDiv.appendChild(card);
+        });
+
+        kanban.appendChild(colDiv);
+      });
+    }
+
+    render();
+  </script>
+
+</body>
+</html>
